@@ -41,8 +41,8 @@ def facebook_scrape(facebook_id: str, output: str) -> None:
 
     This function uses the facebook username to scrape the profile information in a JSON-object. 
     The facebook_scraper module is used for that.
-    In the JSON-object the key of the profile picture is sought. The URL is captured and the requests
-    module is used to download and save the profile picture.
+    In the JSON-object the key of the profile picture is sought. The URL is captured and the Requests
+    library is used to download and save the profile picture.
     After each download we let the script sleep for a while in order to avoid a facebook ban. 
     This pause is a random value to make it look more human-like.
 

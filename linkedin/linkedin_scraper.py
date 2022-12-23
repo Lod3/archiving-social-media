@@ -36,14 +36,15 @@ QID_key = 'QID'
 command = "say Help! Something's wrong. Restart the linkedin-profile-scraper app"
 
 
-def linkedin_scrape(linkedin_id:str, output:str) -> None:
+def linkedin_scrape(linkedin_id: str, output: str) -> None:
     """A simple function to download the profile picture of a linkedin account.
 
     This function uses the linkedin username to scrape the profile information in a JSON-object
-    via the requests module. The external linkedin-profile-scraper app is also used 
+    via the Requests library. The external linkedin-profile-scraper app is also used 
     (https://github.com/nvanderperren/linkedin-profile-scraper)
-    In the JSON-object the key of the profile picture is sought. The URL is captured and the requests
-    module is used to download and save the profile picture.
+    In the JSON-object the key of the profile picture is sought. The profile picture is then downloaden. 
+    A uuid is used to create unique filenames.
+    
     After each download we let the script sleep for a while in order to avoid a facebook ban. 
     This pause is a random value to make it look more human-like.
 
@@ -59,7 +60,7 @@ def linkedin_scrape(linkedin_id:str, output:str) -> None:
 
     """
 
-    #output folder
+    # create filename
     uuid = str(uuid4())
     path = output + '/' + uuid + '.jpg'
 
@@ -89,15 +90,15 @@ def linkedin_scrape(linkedin_id:str, output:str) -> None:
         print("sleeping for " + str(pause) + ' seconds')
         sleep(pause)
 
-def create_folder(folder):
+def create_folder(folder: str) -> None:
     """A simple function to check if a folder already exists and create it"""
     if not os.path.exists(folder):
         os.mkdir(folder)
 
 
-def start(metadata, output_dir):
-    """A function that uses the csv DictReader to look for the right columns and 
-    pass on the values to the linkedin_scrape function"""
+def start(metadata: str, output_dir: str) -> None:
+    """A function that uses the csv DictReader to look for the right columns
+    in the csv and pass on the values to the linkedin_scrape function"""
     print("hello! starting!")
     with open(metadata, 'r') as input_file:
         reader = DictReader(input_file)
