@@ -29,9 +29,13 @@ class Politician:
         self.ID = ID
         self.place = place
         self.party = party
-        self.social_media_identifiers = []
-        self.urls = []
+        self.social_media_accounts = []
 
+class Social_Media_Account:
+    def __init__(self, username, platform, url = ''):
+        self.username = username
+        self.url = url
+        self.platform = platform
 
 def get_politicians_info() -> set:
     """Parse the CSV from wikidata and store essential information in a set"""
@@ -39,38 +43,73 @@ def get_politicians_info() -> set:
         reader = DictReader(input_file)
         all_politicians = []
         for row in reader:
-            politician = Politician(row["volledige naam"], row['QID'], row["gemeente"], row["fractie"])
+            politician = Politician(row["volledige naam"], row['QID'], row["gemeente"], row["partij"])
             if politician.ID == '':
                 politician.ID = str(uuid4())
+            politician.social_media_accounts = get_social_media_accounts(row)
             all_politicians.append(politician)
         unique_politicians = set(all_politicians)
+
         return unique_politicians
+
+def get_social_media_accounts(values):
+    social_media_accounts = []
+    if values['twitter'] != '':
+        social_media_accounts.append(Social_Media_Account(values['twitter'], 'twitter'))
+    if values['facebook'] != '':
+        social_media_accounts.append(Social_Media_Account(values['facebook'], 'facebook'))
+    if values['linkedin'] != '':
+        social_media_accounts.append(Social_Media_Account(values['linkedin'], 'linkedin'))
+    
+    return social_media_accounts
+
+
+def has_no_account(accounts, platform):
+    for account in accounts:
+        if account.platform == platform:
+            return False
+    return True
+
+def get_platform_accounts(accounts, platform):
+    platform_accounts = []
+    for account in accounts:
+        if account.platform == platform:
+            platform_accounts.append(account)
+    return platform_accounts
+
+def get_platform_usernames(accounts, platform):
+    platform_accounts = []
+    for account in accounts:
+        if account.platform == platform:
+            platform_accounts.append(account.username)
+    return platform_accounts
 
 
 def find_politician_profiles(set: Politician):
     """Find social media accounts via google with info from the politicians set"""    
     for platform in platforms:
         for index, politician in enumerate(politicians):
-            politician.urls.clear()
-            politician.social_media_identifiers.clear()
             print(f"#{index+1} {politician.name}")
 
-            # create the google query from our collection of politicians
-            query = f"{politician.name} {politician.place} {platform}".replace(' ', '+')
-            pause = randint(0,5) # random pause to have more human-like behaviour
-            finds = search(query, num=3, stop=3, lang="nl", pause=pause) 
-            finds = filter(lambda url: url.find(platform) >= 0, finds) 
-            for find in finds:
-                identifier = get_account(find)
-                if identifier is not None and not identifier.lower() in politician.social_media_identifiers:
-                    politician.social_media_identifiers.append(identifier)
-                    politician.urls.append(find)
-
+            if has_no_account(politician.social_media_accounts, platform):
+            
+                # create the google query from our collection of politicians
+                query = f"{politician.name} {politician.place} {platform}".replace(' ', '+')
+                pause = randint(0,5) # random pause to have more human-like behaviour
+                finds = search(query, num=3, stop=3, lang="nl", pause=pause) 
+                finds = filter(lambda url: url.find(platform) >= 0, finds) 
+                for find in finds:
+                    identifier = parse_account(find)
+                    if identifier is not None:
+                        account = Social_Media_Account(identifier.lower(), platform, find)
+                        if not identifier.lower() in get_platform_usernames(politician.social_media_accounts, platform):
+                            politician.social_media_accounts.append(account)
         write_csv(platform, politicians)
+        
         print(f"\nfinished with {platform}\n".upper())
 
 
-def get_account(url):
+def parse_account(url):
     for word in wrong_words:
         if word in url:
             return
@@ -102,9 +141,10 @@ def write_csv(platform, politicians):
         name = politician.name
         location = politician.place
         party = politician.party
-        for (identifier, url) in zip(politician.social_media_identifiers, politician.urls):
-            if identifier and url:
-                lines.append([id, name, location, party, identifier, url])
+        accounts = get_platform_accounts(politician.social_media_accounts, platform)
+        for account in accounts:
+            if account.username and account.url:
+                lines.append([id, name, location, party, account.username, account.url])
 
     with open(path, 'w') as output_file:
         csv_writer = writer(output_file)
