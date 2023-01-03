@@ -5,13 +5,11 @@
 # 3. do some kind of validation with scraping tools (in other scripts)
 
 from csv import DictReader, writer
-import os
 from sys import argv
 from random import randint
 from time import sleep
 from uuid import uuid4
 
-from facebook_scraper import get_profile
 from googlesearch import search
 
 in_csv = argv[1]
