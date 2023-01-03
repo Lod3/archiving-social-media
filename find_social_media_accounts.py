@@ -94,6 +94,7 @@ def find_politician_profiles(set: Politician) -> None:
                 pause = randint(0,60) # random pause to have more human-like behaviour
                 finds = search(query, num=3, stop=3, lang="nl", pause=pause)
                 finds = filter(lambda url: url.find(platform) >= 0, finds)
+                # bij facebook beter checken voor facebook.com?
                 for find in finds:
                     identifier = parse_account_from_url(find)
                     if identifier is not None:
@@ -109,6 +110,8 @@ def find_politician_profiles(set: Politician) -> None:
 
 
 def parse_account_from_url(url: str) -> str:
+    #TODO nog iets doen met de /pages/category/ stuff
+
     for word in wrong_words:
         if word in url:
             return
