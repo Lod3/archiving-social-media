@@ -1,5 +1,10 @@
 # Facebook workflow
 
+## Inhoud
+
+* [facebook_scrape.py](facebook_scrape.py): dit script gebruikt facebookidentifiers om de profielfoto te zoeken op ieder account en het te downloaden in een map met het QID
+* [facebook_validate_profile.py](facebook_validate_profile.py): dit script is een beginnertje om de van facebookaccounts die gevonden werden met het [find_social_media_accounts.py](../find_social_media_accounts.py) script te controleren of het wel het juiste account is
+
 ## Voorlopige workflow
 
 1. parse CSV (fullname +  location)

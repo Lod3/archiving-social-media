@@ -1,7 +1,12 @@
-beautifulsoup4==4.9.3
-facebook-scraper==0.2.59
-google==3.0.0
-googlesearch-python==1.1.0
-instaloader==4.9.5
-requests==2.25.1
-twarc==2.13.0 
+beautifulsoup4
+detectron2 @ git+https://github.com/facebookresearch/detectron2.git
+facebook-scraper
+googlesearch-python
+instaloader
+opencv-python
+pandas
+python-dotenv
+torch
+torchvision
+torchaudio
+twarc
