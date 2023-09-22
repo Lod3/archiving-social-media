@@ -9,5 +9,5 @@ python-dotenv
 torch
 torchvision
 torchaudio
-twar
+twarc
 wikiget
