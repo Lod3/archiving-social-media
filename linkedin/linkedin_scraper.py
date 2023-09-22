@@ -6,8 +6,7 @@ This tool makes use of an external javascript app, linkedin-profile-scraper
 (https://github.com/nvanderperren/linkedin-profile-scraper). It is essential 
 that that app is started before starting this tool.
 
-This script requires requests to be installed within the Python
-environment you are running this script in.
+This script requires requests to be installed in the Python environment.
 
 Usage:
 ------
