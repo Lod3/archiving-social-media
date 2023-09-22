@@ -5,8 +5,7 @@ This script downloads profile pictures of facebook accounts that are listed in a
 This tool requires a .env file (see .env.example in the GitHub repository) containing the path to 
 a facebook cookies.txt file, which is necessary to scrape facebook.
 
-This script requires dotenv, facebook_scraper and reuests to be installed within the Python
-environment you are running this script in.
+This script requires dotenv, facebook_scraper and requests to be installed in the Python environment.
 
 Usage:
 ------
