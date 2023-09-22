@@ -4,7 +4,7 @@ facebook-scraper
 googlesearch-python
 instaloader
 opencv-python
-pandas  ## kan misschien weg?
+pandas
 python-dotenv
 torch
 torchvision
