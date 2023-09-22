@@ -1,3 +1,5 @@
+## WARNING: THIS SCRIPT IS WORK-IN-PROGRESS AND UNFINISHED
+
 # idea:
 # 1. get the data out of the csv
 # 2. use get_profile to get the name and the places_lived out of the profile
